@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { CircuitProvider } from 'components/CircuitContext'
 import type { AppProps } from "next/app";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
+import { ChakraProvider } from '@chakra-ui/react';
 import "@rainbow-me/rainbowkit/styles.css";
 import NextNProgress from "nextjs-progressbar";
 import { Toaster } from "react-hot-toast";
@@ -43,7 +45,11 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="relative flex flex-col flex-1">
-            <Component {...pageProps} />
+            <ChakraProvider>
+              <CircuitProvider>
+              <Component {...pageProps} />
+              </CircuitProvider>
+            </ChakraProvider>
           </main>
           <Footer />
         </div>
