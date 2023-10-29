@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { useCircuitContext } from "../components/CircuitContext";
-import { Button, Icon } from "@chakra-ui/react";
+import { Button, Icon, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 import { encodeAbiParameters, keccak256 } from "viem";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
 import { useScaffoldContractRead, useScaffoldContractWrite, useScaffoldEventSubscriber } from "~~/hooks/scaffold-eth";
@@ -83,20 +83,20 @@ export function Load_Results(): JSX.Element {
   return (
     <>
       <div>
-        <table className="table-auto hover:table-fixed">
-          <thead>
-            <tr>
-              <th>Circuit Hash</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table variant='simple' size='lg'>
+          <Thead>
+            <Tr>
+              <Th color='white'>Circuit Hashes (Click to see the result) </Th>
+            </Tr>
+          </Thead>
+          <Tbody>
             {circuitHashes.map(hash => (
-              <tr key={hash} onClick={() => setSelectedCircuitHash(hash)}>
-                <td>{hash}</td>
-              </tr>
+              <Tr key={hash} onClick={() => setSelectedCircuitHash(hash)}>
+                <Td>{hash}</Td>
+              </Tr>
             ))}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
 
         {selectedCircuitHash && (
           <div>
