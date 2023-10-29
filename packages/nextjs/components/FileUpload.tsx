@@ -4,7 +4,7 @@ import { Button, FormControl, FormErrorMessage, FormLabel, Icon, InputGroup } fr
 import { UseFormRegisterReturn, useForm } from "react-hook-form";
 import { encodeAbiParameters, keccak256 } from "viem";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
-import { ArrowSmallUpIcon, CheckBadgeIcon } from "@heroicons/react/24/solid";
+import { ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { useScaffoldContractRead, useScaffoldContractWrite, useScaffoldEventSubscriber } from "~~/hooks/scaffold-eth";
 
 type FileUploadProps = {
@@ -83,21 +83,6 @@ export function Upload() {
         setCircuitString(fileContents);
         setCircuit(fileContents);
         setTitle("Your Circuit");
-        //TODO currently can't render image
-        // const imgPromise = fetchQiskitDataFromApi(fileContents);
-        // imgPromise
-        //   .then(resolvedValue => {
-        //     // Do something with the resolved value
-        //     const imageBlob = resolvedValue;
-        //     const blob = new Blob(imageBlob, { type: "image/png" }); // the blob
-        //     const imageObjectURL = URL.createObjectURL(blob);
-        //     console.log(imageObjectURL);
-        //     setImg(imageObjectURL);
-        //   })
-        //   .catch(error => {
-        //     // Handle any errors that occurred during the promise execution
-        //     console.log(error);
-        //   });
       })
       .catch(error => {
         console.error(error);
@@ -129,9 +114,18 @@ export function Upload() {
   const [circuitHash, setCircuitHash] = useState<`0x${string}`>();
 
   useEffect(() => {
-    if (!CircuitString) return;
+    if (!CircuitString) {
+      setCircuitHash(undefined);
+      return;
+    }
     const encodedCircuit = encodeAbiParameters([{ name: "circuitQASM", type: "string" }], [CircuitString]);
-    setCircuitHash(keccak256(encodedCircuit));
+    const hash = keccak256(encodedCircuit);
+    setCircuitHash(hash);
+    const circuits = JSON.parse(localStorage.getItem("circuits") || "[]");
+    if (!circuits.includes(hash)) {
+      circuits.push(hash);
+      localStorage.setItem("circuits", JSON.stringify(circuits));
+    }
   }, [CircuitString]);
 
   const { data: status, refetch: statusRefetch } = useScaffoldContractRead({
@@ -146,7 +140,7 @@ export function Upload() {
     args: [circuitHash],
   });
 
-  console.log(status);
+  console.log(circuitHash);
 
   const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
     contractName: "QuantumOracleV1",
@@ -210,11 +204,20 @@ export function Upload() {
           {/* <button></button> */}
         </p>
       </form>
+      {CircuitString && (
+        <form action="https://quantum-api-2eds4tyidq-nw.a.run.app/draw" target="my-iframe" method="post">
+          <input type="hidden" name="qasm" value={CircuitString} />
+          <button type="submit" style={{ textDecoration: "underline" }}>
+            Display Circuit <Icon as={ArrowTopRightOnSquareIcon} />
+          </button>
+        </form>
+      )}
+
       <div>
         <h2>{title}</h2>
         <p>
-          {CircuitString.split("\n").map(el => (
-            <React.Fragment key={el}>
+          {CircuitString.split("\n").map((el, i) => (
+            <React.Fragment key={i}>
               {el}
               <br />
             </React.Fragment>
