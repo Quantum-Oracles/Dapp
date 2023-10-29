@@ -5,7 +5,7 @@ import { Button, Icon } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
 
-const Upload: NextPage = () => {
+const UploadPage: NextPage = () => {
   return (
     <>
       <MetaHeader />
@@ -21,4 +21,4 @@ const Upload: NextPage = () => {
   );
 };
 
-export default Upload;
+export default UploadPage;
