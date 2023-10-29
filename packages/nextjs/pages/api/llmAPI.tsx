@@ -1,5 +1,6 @@
 "use server";
 
+import { NextApiRequest, NextApiResponse } from "next";
 import OpenAI from "openai";
 
 console.log(process.env.NEXT_OPENAI_API_KEY);
@@ -16,7 +17,12 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-export async function openaifun(prompt: string) {
+type ResponseData = {
+  message: string;
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
+  const { prompt } = req.body;
   console.log("Prompt:", prompt);
   // console.log("Model:", process.env.model_name);
   try {
@@ -25,7 +31,7 @@ export async function openaifun(prompt: string) {
         {
           role: "user",
           content: `
-            Create a quantum circit and return only the OpenQASM V2 format for the quantum computer for the following problem:
+            Create a quantum circit and return only the OpenQASM V2 format for the quantum computer for the following problem (we need just the qasm output and nothing more):
             ${prompt}
           `,
         },
@@ -34,9 +40,11 @@ export async function openaifun(prompt: string) {
     });
     console.log("Response:", chatCompletion);
     console.log("Choices:", chatCompletion?.choices[0].message);
-    return chatCompletion?.choices[0]?.message.content;
+    const message = chatCompletion?.choices[0]?.message.content;
+    if (!message) return res.status(500).json({ message: "Something went wrong" });
+    return res.json({ message });
   } catch (error) {
     console.error("Error getting completion from OpenAI:", error);
-    throw error;
+    return res.status(500).json({ message: "Something went wrong" });
   }
 }
