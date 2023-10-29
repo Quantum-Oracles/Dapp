@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BugAntIcon, CommandLineIcon, CpuChipIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -16,6 +16,16 @@ export const menuLinks: HeaderMenuLink[] = [
   {
     label: "Home",
     href: "/",
+  },
+  {
+    label: "Upload Quantum Circuit",
+    href: "/upload",
+    icon: <CommandLineIcon className="h-4 w-4" />,
+  },
+  {
+    label: "QOracle Computations",
+    href: "/results",
+    icon: <CpuChipIcon className="h-4 w-4" />,
   },
   {
     label: "Debug Contracts",
