@@ -1,10 +1,9 @@
 import Link from "next/link";
-import type { NextPage } from "next";
+import { Upload } from "../components/FileUpload";
+import { MetaHeader } from "../components/MetaHeader";
 import { Button, Icon } from "@chakra-ui/react";
+import type { NextPage } from "next";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
-import { MetaHeader } from "~~/components/MetaHeader";
-import { Upload } from 'components/FileUpload';
-
 
 const Home: NextPage = () => {
   return (
@@ -16,13 +15,6 @@ const Home: NextPage = () => {
             <span className="block text-2xl mb-2">Upload your Quantum Circuit</span>
           </h1>
           <Upload />
-          <div>
-          <p className="text-center mb-8">
-          <Link href="/submit-circuit"> 
-           <Button leftIcon={<Icon as={CpuChipIcon} />}>Send Circuit to QOracle</Button>
-          </Link>
-          </p>
-          </div>
         </div>
       </div>
     </>

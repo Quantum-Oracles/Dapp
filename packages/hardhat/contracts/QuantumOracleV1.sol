@@ -105,7 +105,7 @@ contract QuantumOracleV1 is Ownable {
 				emit ResultsCollected(circuitHash);
 			}
 			if (rtype == RequestType.CLUB_RESULT) {
-				// check the clubbed result (if all oracles return the same response or not)
+				// TODO: check the clubbed result (if all oracles return the same response or not)
 				results[circuitHash] = data;
 				status[circuitHash] = Status.RESULT_UPDATED;
 				emit CircuitResultUpdated(circuitHash, data);
