@@ -205,7 +205,7 @@ export function Upload() {
         </p>
       </form>
       {CircuitString && (
-        <form action="http://127.0.0.1:8000/draw" target="my-iframe" method="post">
+        <form action="https://quantum-api-2eds4tyidq-nw.a.run.app/draw" target="my-iframe" method="post">
           <input type="hidden" name="qasm" value={CircuitString} />
           <button type="submit" style={{ textDecoration: "underline" }}>
             Display Circuit <Icon as={ArrowTopRightOnSquareIcon} />
