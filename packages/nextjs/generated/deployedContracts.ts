@@ -1,11 +1,11 @@
 const contracts = {
-  31337: [
+  16: [
     {
-      chainId: "31337",
-      name: "localhost",
+      chainId: "16",
+      name: "coston",
       contracts: {
         QuantumOracleV1: {
-          address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          address: "0x7A140831ddF3c56E44401d9be76D78D42B704d69",
           abi: [
             {
               inputs: [],

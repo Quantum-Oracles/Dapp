@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-const contractAddress = "0xCaFcA6F468d65dDB9A752Fc2AC90AC76D8897cC2";
+const contractAddress = "0x7A140831ddF3c56E44401d9be76D78D42B704d69";
 
 async function addOracleAddress() {
   const QuantumOracle = await ethers.getContractFactory("QuantumOracleV1");

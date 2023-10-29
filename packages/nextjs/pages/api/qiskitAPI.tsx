@@ -1,30 +1,46 @@
-import axios from 'axios'
-
+import axios from "axios";
 
 // Define an async function to fetch data from the API
-export async function fetchQiskitDataFromApi(): Promise<any> {
+export async function fetchQiskitDataFromApi(qasm: string): Promise<any> {
   // Define the API URL
 
   const data = JSON.stringify({
-    qasm: 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[3];\ncreg meas[3];\nh q[0];\ncx q[0],q[1];\ncx q[0],q[2];\nbarrier q[0],q[1],q[2];\nmeasure q[0] -> meas[0];\nmeasure q[1] -> meas[1];\nmeasure q[2] -> meas[2];',
-  })
+    qasm,
+  });
 
   const config = {
-    method: 'post',
+    method: "post",
     maxBodyLength: Infinity,
-    url: 'https://fastapi-production-b856.up.railway.app/draw',
+    url: "https://quantum-api-2eds4tyidq-nw.a.run.app/draw",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
+      Accept: "image/png",
     },
+    responseType: "blob",
     data: data,
-  }
-  
+  };
+
+  fetch("https://quantum-api-2eds4tyidq-nw.a.run.app/draw", {
+    method: "POST",
+    body: data,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "image/png",
+    },
+  }).then(async res => {
+    const blob = await res.blob();
+    const objectURL = URL.createObjectURL(blob);
+  });
+
   return axios
-    .request(config)
+    .request(config as any)
     .then(response => {
-      console.log(JSON.stringify(response))
+      console.log(URL.createObjectURL(response.data));
+      let blob = new Blob([response.data], { type: "image/png" });
+      const data = URL.createObjectURL(blob);
+      console.log(data);
     })
     .catch(error => {
-      console.log(error)
-    })
+      console.log(error);
+    });
 }
