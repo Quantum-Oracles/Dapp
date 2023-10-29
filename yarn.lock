@@ -33,6 +33,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@api3/airnode-abi@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@api3/airnode-abi@npm:0.12.0"
+  dependencies:
+    ethers: ^5.7.2
+    lodash: ^4.17.21
+  checksum: f314566af9eaa1bba2be2f180a2edc4b04d55b9bee1e28d280e6c4319de7521dedf62daa41fd899505cea6cc4fbfd3497320cd33873b3ac4806d69c65d87e81a
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0":
   version: 7.22.13
   resolution: "@babel/code-frame@npm:7.22.13"
@@ -2068,7 +2078,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:^5.7.2":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5.7.2":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -3365,7 +3375,6 @@ __metadata:
     "@uniswap/v2-sdk": ^3.0.1
     autoprefixer: ^10.4.12
     axios: ^1.6.0
-    "axios#": ^1.6.0
     blo: ^1.0.1
     daisyui: ^3.5.1
     eslint: ^8.15.0
@@ -5973,17 +5982,6 @@ __metadata:
   version: 4.4.3
   resolution: "axe-core@npm:4.4.3"
   checksum: c3ea000d9ace3ba0bc747c8feafc24b0de62a0f7d93021d0f77b19c73fca15341843510f6170da563d51535d6cfb7a46c5fc0ea36170549dbb44b170208450a2
-  languageName: node
-  linkType: hard
-
-"axios#@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "axios#@npm:1.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmjs.org%2Faxios%2F-%2Faxios-1.6.0.tgz"
-  dependencies:
-    follow-redirects: ^1.15.0
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: 80e50dcd5a1ab082863419886dc055a9e605b8c5c46f3efb4f2a6cb52381d0f7a177066594927b2d96b929e5ed8274a8aafd2caed73d3aa691755f0bf0f74e73
   languageName: node
   linkType: hard
 
@@ -8665,6 +8663,44 @@ __metadata:
     "@ethersproject/web": 5.7.1
     "@ethersproject/wordlists": 5.7.0
   checksum: 7a61b7a105c41f9fec327887414f1950dc27bfa2d12fe29a068419eaaa3d415e6a12275685c87f700abd88c3b639ae79c09a2f90edea1e69edc8126cb0dce708
+  languageName: node
+  linkType: hard
+
+"ethers@npm:^5.7.2":
+  version: 5.7.2
+  resolution: "ethers@npm:5.7.2"
+  dependencies:
+    "@ethersproject/abi": 5.7.0
+    "@ethersproject/abstract-provider": 5.7.0
+    "@ethersproject/abstract-signer": 5.7.0
+    "@ethersproject/address": 5.7.0
+    "@ethersproject/base64": 5.7.0
+    "@ethersproject/basex": 5.7.0
+    "@ethersproject/bignumber": 5.7.0
+    "@ethersproject/bytes": 5.7.0
+    "@ethersproject/constants": 5.7.0
+    "@ethersproject/contracts": 5.7.0
+    "@ethersproject/hash": 5.7.0
+    "@ethersproject/hdnode": 5.7.0
+    "@ethersproject/json-wallets": 5.7.0
+    "@ethersproject/keccak256": 5.7.0
+    "@ethersproject/logger": 5.7.0
+    "@ethersproject/networks": 5.7.1
+    "@ethersproject/pbkdf2": 5.7.0
+    "@ethersproject/properties": 5.7.0
+    "@ethersproject/providers": 5.7.2
+    "@ethersproject/random": 5.7.0
+    "@ethersproject/rlp": 5.7.0
+    "@ethersproject/sha2": 5.7.0
+    "@ethersproject/signing-key": 5.7.0
+    "@ethersproject/solidity": 5.7.0
+    "@ethersproject/strings": 5.7.0
+    "@ethersproject/transactions": 5.7.0
+    "@ethersproject/units": 5.7.0
+    "@ethersproject/wallet": 5.7.0
+    "@ethersproject/web": 5.7.1
+    "@ethersproject/wordlists": 5.7.0
+  checksum: b7c08cf3e257185a7946117dbbf764433b7ba0e77c27298dec6088b3bc871aff711462b0621930c56880ff0a7ceb8b1d3a361ffa259f93377b48e34107f62553
   languageName: node
   linkType: hard
 
@@ -13962,6 +13998,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "se-2@workspace:."
   dependencies:
+    "@api3/airnode-abi": ^0.12.0
     husky: ^8.0.1
     lint-staged: ^13.0.3
   languageName: unknown
