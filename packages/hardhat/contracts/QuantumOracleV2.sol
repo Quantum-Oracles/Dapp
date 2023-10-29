@@ -25,7 +25,7 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
 	mapping(bytes32 => mapping(RequestType => string[])) public oracleResponses;
 	mapping(bytes32 => string) public circuits;
 	mapping(bytes32 => string) public results;
-	mapping(bytes32 => bytes[]) public jobIds;
+	mapping(bytes32 => string[]) public jobIds;
 	mapping(bytes32 => Status) public status;
     mapping(bytes32 => bool) public circuitIncomingFulfillments;
     mapping(bytes32 => bool) public resultIncomingFulfillments;
@@ -39,7 +39,8 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
     bytes32 public circuitEndpointId;
     bytes32 public resultEndpointId;
 
-    bytes public returnedResponse;
+    string public circuitReturnedResponse;
+    string public resultReturnedResponse;
 
 	event OracleAdded(address oracleAddress);
 	event OracleRemoved(address oracleAddress);
@@ -65,10 +66,12 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
 
 	constructor(address _rrpAddress) RrpRequesterV0(_rrpAddress) {}
 
+    // Set our price feed 
     function setProxyAddress(address _proxyAddress) public onlyOwner {
         proxyAddress = _proxyAddress;
     }
 
+    // Setup Airnode Parameters
     function setRequestParameters(
         address _airnode,
         bytes32 _circuitEndpointId,
@@ -81,6 +84,7 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
         sponsorWallet = _sponsorWallet;
     }
 
+     //The main makeRequest function that will trigger the Airnode request.
     function circuitMakeRequest(bytes calldata parameters) external {
         bytes32 requestId = airnodeRrp.makeFullRequest(
             airnode,
@@ -95,18 +99,18 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
         emit RequestedUint256(requestId);
     }
 
-    function circuitFulfill(bytes32 requestId, bytes calldata data)
+    // This is the response from the Airnode request
+    function circuitFulfill(bytes32 requestId, bytes32 circuitHash, bytes calldata data)
         external
-        onlyAirnodeRrp
     {
         require(circuitIncomingFulfillments[requestId], "No such request made");
         delete circuitIncomingFulfillments[requestId];
-        string memory decodedData = abi.decode(data, (string));
-        returnedResponse = data;
-        // addJobIds(circuitHash, decodedData);
-        emit ReceivedString(requestId, decodedData);
+        circuitReturnedResponse = abi.decode(data, (string));
+        addJobIds(circuitHash, circuitReturnedResponse);
+        emit ReceivedString(requestId, circuitReturnedResponse);
     }
 
+     //The main makeRequest function that will trigger the Airnode request.
     function resultMakeRequest(bytes calldata parameters) external {
         bytes32 requestId = airnodeRrp.makeFullRequest(
             airnode,
@@ -121,15 +125,15 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
         emit RequestedUint256(requestId);
     }
 
+    // This is the response from the Airnode request
     function resultFulfill(bytes32 requestId, bytes32 circuitHash, bytes calldata data)
         external
-        onlyAirnodeRrp
     {
         require(resultIncomingFulfillments[requestId], "No such request made");
         delete resultIncomingFulfillments[requestId];
-        string memory decodedData = abi.decode(data, (string));
-        addResults(circuitHash, decodedData);
-        emit ReceivedString(requestId, decodedData);
+        resultReturnedResponse = abi.decode(data, (string));
+        addResults(circuitHash, resultReturnedResponse);
+        emit ReceivedString(requestId, resultReturnedResponse);
     }
 
     function addJobIds(bytes32 circuitHash, string memory data) public {
@@ -139,7 +143,7 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
 			revert AlreadySubmittedResponse();
 		oracleResponses[circuitHash][RequestType.CREATE_CIRCUIT].push(data);
 
-		jobIds[circuitHash].push(returnedResponse);
+		jobIds[circuitHash].push(circuitReturnedResponse);
     }
 
     function addResults(bytes32 circuitHash, string memory data) public {
@@ -167,6 +171,7 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
 
     function readDataFeed() public view returns (uint256, uint256) {
         (int224 value, uint256 timestamp) = IProxy(proxyAddress).read();
+        //convert price to UINT256
         uint256 price = uint224(value);
         return (price, timestamp);
     }
@@ -180,8 +185,11 @@ contract QuantumOracleV1 is RrpRequesterV0, Ownable {
 	function calculateCost(
 		string memory circuitQASM
 	) public view returns (uint256) {
+        // Fetch the current ETH price in USD
         (uint256 price, ) = readDataFeed();
         uint256 cost = calculateCostInUSD(circuitQASM);
+        // Calculate the equivalent amount in ETH for a hundred dollars
+        // Note: Assuming price is the price of 1 ETH in USD in wei format (e.g., if 1 ETH = $3000, then price = 3000e18)
         uint256 amountInETHWei = (cost * 1 ether) / price;
 		return amountInETHWei;
 	}
