@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { NextPage } from "next";
-import { CommandLineIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { CommandLineIcon, MagnifyingGlassIcon, LanguageIcon } from "@heroicons/react/24/outline";
 import { MetaHeader } from "~~/components/MetaHeader";
 
 const Home: NextPage = () => {
@@ -29,6 +29,16 @@ const Home: NextPage = () => {
             </div>
 
             <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
+              <LanguageIcon className="h-8 w-8 fill-secondary" />
+              <p>
+                Generate your Quantum Circuit with an LLM{" "}
+                <Link href="/generateCircuit" passHref className="link">
+                  here
+                </Link>{" "}
+              </p>
+            </div>
+
+            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
               <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
               <p>
                 Find the results of your Quantum Computations{" "}
@@ -37,6 +47,7 @@ const Home: NextPage = () => {
                 </Link>{" "}
               </p>
             </div>
+
           </div>
         </div>
       </div>
